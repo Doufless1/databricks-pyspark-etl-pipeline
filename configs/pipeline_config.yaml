@@ -1,0 +1,21 @@
+storage:
+  account_name: "stlogisticsdatalake"
+  container_raw: "raw-logistics-landing"
+  container_lakehouse: "delta-lakehouse"
+  paths:
+    bronze: "abfss://delta-lakehouse@stlogisticsdatalake.dfs.core.windows.net/bronze/logistics_events"
+    silver: "abfss://delta-lakehouse@stlogisticsdatalake.dfs.core.windows.net/silver/fact_shipments"
+    silver_quarantine: "abfss://delta-lakehouse@stlogisticsdatalake.dfs.core.windows.net/silver/quarantine_shipments"
+    gold_kpi: "abfss://delta-lakehouse@stlogisticsdatalake.dfs.core.windows.net/gold/kpi_carrier_otif_daily"
+
+lakehouse_settings:
+  delta_retention_days: 30
+  auto_compact: true
+  optimize_write: true
+  liquid_clustering_keys:
+    - "carrier_id"
+    - "event_date"
+
+quality_thresholds:
+  max_error_rate_percent: 0.5
+  enforce_non_null_shipment_id: true
